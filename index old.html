@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Will</title>
   <style>
     :root {
@@ -10,38 +10,30 @@
       --muted: #666;
       --font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
-    html, body {
-      height: 100%;
-      margin: 0;
+    html, body { height: 100%; margin: 0; }
+    body {
       background: #fff;
       color: var(--fg);
       font-family: var(--font);
-      -webkit-text-size-adjust: 100%;
+      display: grid;
+      place-items: center;
+      text-align: left;
+      padding: 0 1rem;
       box-sizing: border-box;
-      overflow-x: hidden;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 0 1rem calc(24px + env(safe-area-inset-bottom));
-      text-align: center;
     }
 
     /* Headline */
     .headline {
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-size: clamp(14px, 6vw, 36px);
+      font-size: clamp(18px, 4vw, 36px);
       line-height: 1.5;
       white-space: nowrap;
       overflow: hidden;
       max-width: 100%;
     }
     .static-text {
-      margin-right: 0.4em;
+      margin-right: 0.5em; /* reduced gap between static and dynamic text */
       flex-shrink: 0;
       flex: 0 0 auto;
       display: inline-block;
@@ -75,16 +67,13 @@
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: clamp(16px, 4vw, 18px);
+      font-size: 18px;
       font-weight: bold;
       color: var(--muted);
       display: flex;
-      gap: 20px;
+      gap: 24px;
       align-items: center;
       flex-wrap: wrap;
-      justify-content: center;
-      max-width: 90vw;
-      text-align: center;
     }
     nav.links a {
       color: inherit;
@@ -98,13 +87,7 @@
       transform: scale(1.1);
     }
     nav.links .dot { opacity: .5; }
-    a:focus { outline: 2px dashed #bbb; outline-offset: 2px;   }
-
-    /* Mobile fine-tuning */
-    @media (max-width: 480px) {
-      #typer { width: 18ch; flex: 0 0 18ch; }
-      nav.links { font-size: 16px; gap: 16px; }
-    }
+    a:focus { outline: 2px dashed #bbb; outline-offset: 2px; }
   </style>
 </head>
 <body>
