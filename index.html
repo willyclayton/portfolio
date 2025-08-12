@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Will</title>
+  <style>
+    :root {
+      --fg: #000;
+      --muted: #666;
+      --font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: #fff;
+      color: var(--fg);
+      font-family: var(--font);
+      display: grid;
+      place-items: center;
+      text-align: left;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    /* Headline */
+    .headline {
+      display: flex;
+      align-items: center;
+      font-size: clamp(18px, 4vw, 36px);
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 100%;
+    }
+    .static-text {
+      margin-right: 0.5em; /* reduced gap between static and dynamic text */
+      flex-shrink: 0;
+      flex: 0 0 auto;
+      display: inline-block;
+    }
+
+    /* Typer with fixed width to prevent movement */
+    #typer {
+      position: relative;
+      display: inline-block;
+      white-space: nowrap;
+      width: 24ch;
+      flex: 0 0 24ch;
+      overflow: hidden;
+      text-align: left;
+    }
+    #typer::after {
+      content: "";
+      display: inline-block;
+      width: .08em;
+      height: 1em;
+      background: var(--fg);
+      margin-left: .12em;
+      vertical-align: -0.1em;
+      animation: blink .8s step-end infinite;
+    }
+    @keyframes blink { 50% { background: transparent; } }
+
+    /* Links */
+    nav.links {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--muted);
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    nav.links a {
+      color: inherit;
+      text-decoration: none;
+      opacity: .9;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    nav.links a:hover {
+      text-decoration: underline;
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    nav.links .dot { opacity: .5; }
+    a:focus { outline: 2px dashed #bbb; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <div class="headline">
+    <span class="static-text">hello.... I'm</span>
+    <span id="typer" aria-live="polite" aria-label="rotating titles"></span>
+  </div>
+
+  <nav class="links" aria-label="social links">
+    <a href="https://www.linkedin.com/in/willuclayton" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+    <span class="dot">•</span>
+    <a href="https://github.com/willyclayton" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
+  </nav>
+
+  <script>
+    (function() {
+      const words = [
+        "Will",
+        "a data analyst",
+        "a problem solver",
+        "a lifelong learner",
+        "a passionate golfer",
+        "an aspiring innovator"
+      ];
+      const typingDelay = 90;
+      const erasingDelay = 60;
+      const wordPause = 900;
+      const firstPause = 5000;
+
+      const typerEl = document.getElementById('typer');
+
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (mq.matches) { typerEl.textContent = words[0]; return; }
+
+      async function typeText(text) {
+        for (let j = 1; j <= text.length; j++) {
+          typerEl.textContent = text.slice(0, j);
+          await new Promise(r => setTimeout(r, typingDelay));
+        }
+      }
+
+      async function eraseText(text) {
+        for (let j = text.length; j >= 0; j--) {
+          typerEl.textContent = text.slice(0, j);
+          await new Promise(r => setTimeout(r, erasingDelay));
+        }
+      }
+
+      async function startSequence() {
+        let i = 0;
+        while (true) {
+          await typeText(words[i]);
+          await new Promise(r => setTimeout(r, i === 0 ? firstPause : wordPause));
+          await eraseText(words[i]);
+          i = (i + 1) % words.length;
+        }
+      }
+
+      startSequence();
+    })();
+  </script>
+</body>
+</html>
